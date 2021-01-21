@@ -22,7 +22,9 @@ int main()
 	int result = 1;
     while (result != 0)
     {
+		print_board();
         move();
+		system("clear");
         enemy_move();
         result = check_if_end();
         turn++;
@@ -60,7 +62,6 @@ int change_board(int *row, char *column, char player)
 // examples of input: 1a; 2b; 1c; 3a etc...
 void move()
 {
-    print_board();
     int row;
     char column;
     printf("\nyour turn: ");
@@ -102,7 +103,6 @@ void enemy_move()
     else
     {
 	    change_board(&row, &column, 'o');
-        print_board();
     }
 }
 
