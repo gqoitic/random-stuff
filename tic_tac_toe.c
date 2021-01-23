@@ -1,16 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int move();
+void move();
 void print_board();
 int check_if_end();
-int enemy_move();
+void enemy_move();
 int change_board(int *row, int *column, char player);
 
-void move_with_checking();
-void enemy_move_with_checking();
-
 int is_board_full();
+
+void fillList();
+void shuffleList();
 
 char board[4][4] = 
 {
@@ -20,19 +20,62 @@ char board[4][4] =
     { '3', '.', '.', '.' },
 };
 
+struct Cell { int row, column; };
+struct Cell list[9];
+
+void fillList()
+{
+	int index = 0;
+	for (int i = 1; i < 4; i++)
+	{
+		for (int j = 1; j < 4; j++)
+		{
+			struct Cell cell;
+			cell.row = i;
+			cell.column = j;
+			list[index++] = cell;
+		}
+	}
+}
+
+time_t t;
+void shuffleList()
+{
+	/* Initializes random number generator */
+	srand((unsigned) time(&t));
+	int random_index1;
+	int random_index2;
+
+	struct Cell randomC1;
+	struct Cell randomC2;
+
+	for (int i = 0; i < 50; i++)
+	{
+		random_index1 = rand()%9;
+		random_index2 = rand()%9;
+		randomC1 = list[random_index1];
+		randomC2 = list[random_index2];
+		list[random_index1] = randomC2;
+		list[random_index2] = randomC1;
+	}
+}
+
 int main() 
 {
+	fillList();
+	shuffleList();
+
     int turn = 1;
     printf("\nExamples of input: 1a; 2b; 3c etc\n");
 	int result = 1;
     while (result != 0)
     {
 		print_board();
-        move_with_checking();
+		move();
 		result = check_if_end();
 		if (result == 0) break;
 		system("clear");
-        enemy_move_with_checking();
+        enemy_move();
         result = check_if_end();
         turn++;
     }
@@ -68,7 +111,7 @@ int change_board(int *row, int *column, char player)
 }
 
 // examples of input: 1a; 2b; 1c; 3a etc...
-int move()
+void move()
 {
     int row;
     char column;
@@ -80,61 +123,44 @@ int move()
 	else if (column == 'b') column_n = 2;
 	else if (column == 'c') column_n = 3;
 
-	if (board[row][column_n] != '.')
-    {
-        printf("\nYou can't move this way. Try again.\n");
-        return 1;
-    }
-	else if (change_board(&row, &column_n, 'x') != 0)
+	struct Cell checking;
+
+	for (int i = 0; i < 9; i++)
 	{
-		printf("\nIncorrect input. Try again.\n");
-		return 1;
+		checking = list[i];
+		if (checking.row != row) continue;
+		else
+		{
+			if (checking.column != column_n) continue;
+			else
+			{
+				change_board(&row, &column_n, 'x');		
+				list[i].row = 0;
+				return;
+			}
+		}
 	}
-	change_board(&row, &column_n, 'x');
-	return 0;
+	printf("\nYou can't move this way. Try again.\n");
+	move();
 }
 
-void move_with_checking()
-{
-	int correctMove = move();
-	while (correctMove != 0)
-	{
-		correctMove = move();
-	}
-}
-
-time_t t;
-int enemy_move()
+void enemy_move()
 {
 	/* Initializes random number generator */
 	srand((unsigned) time(&t));
 
-	int row;
-	int column_n;
+	int random_index = rand()%9;
+	struct Cell randomCell;
+	randomCell.row = 0;
+	randomCell.column = 0;
 
-	row = rand()%3+1;
-	column_n = rand()%3+1;
-
-    if (board[row][column_n] != '.')
-    {
-        return 1;
-    }
-    else
-    {
-	    change_board(&row, &column_n, 'o');
-		return 0;
-    }
-}
-
-// TODO: fix 
-void enemy_move_with_checking()
-{
-	int correctMove = enemy_move();
-	while (correctMove != 0)
+	while (randomCell.row == 0)
 	{
-		printf("randoming enemy's turn (obviously needs to be fixed)\n");
-		correctMove = enemy_move();
+		random_index = rand()%9;
+		randomCell = list[random_index];
 	}
+	change_board(&randomCell.row, &randomCell.column, 'o');
+	list[random_index].row = 0;
 }
 
 int is_board_full()
