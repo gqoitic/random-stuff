@@ -165,12 +165,13 @@ void enemy_move()
 
 int is_board_full()
 {
-	int empty_cells = 9;
-	for (int i = 1; i < 4; i++)
+	int empty_cells = 0;
+	for (int i = 0; i < 9; i++)
 	{
-		for (int j = 1; j < 4; j++)
+		if (list[i].row != 0) 
 		{
-			if (board[i][j] != '.') empty_cells--;
+			empty_cells++;
+			break;
 		}
 	}
 	return (empty_cells > 0) ? 1 : 0;
