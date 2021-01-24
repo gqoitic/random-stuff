@@ -170,49 +170,109 @@ void smart_enemy_move()
 	struct Cell cellToMove;
 	cellToMove.row = 0;
 	cellToMove.column = 0;
-	// checking horizontal lines
-	if (board[1][1] == 'x' && board[1][3] == 'x')
-	{
-		cellToMove.row = 1;
-		cellToMove.column = 2;
-	}
-	else if (board[2][1] == 'x' && board[2][3] == 'x')
+	// checking diagonal lines
+	if (board[1][1] != '.' && board[3][3] != '.' && board[1][1] == board[3][3])
 	{
 		cellToMove.row = 2;
 		cellToMove.column = 2;
 	}
-	else if (board[3][1] == 'x' && board[3][3] == 'x')
+	else if (board[1][3] != '.' && board[3][1] != '.' && board[1][3] == board[3][1])
+	{
+		cellToMove.row = 2;
+		cellToMove.column = 2;
+	}
+	// all other checkings (when 2 X or O in a row)
+	else if (board[1][1] != '.' && board[1][2] != '.' && board[1][1] == board[1][2])
+	{
+		cellToMove.row = 1;
+		cellToMove.column = 3;
+	}
+	else if (board[2][1] != '.' && board[2][2] != '.' && board[2][1] == board[2][2])
+	{
+		cellToMove.row = 2;
+		cellToMove.column = 3;
+	}
+	else if (board[3][1] != '.' && board[3][2] != '.' && board[3][1] == board[3][2])
+	{
+		cellToMove.row = 3;
+		cellToMove.column = 3;
+	}
+	else if (board[1][1] != '.' && board[2][1] != '.' && board[1][1] == board[2][1])
+	{
+		cellToMove.row = 3;
+		cellToMove.column =1;
+	}
+	else if (board[1][2] != '.' && board[2][2] != '.' && board[1][2] == board[2][2])
+	{
+		cellToMove.row = 3;
+		cellToMove.column = 2;
+	}
+	else if (board[1][3] != '.' && board[2][3] != '.' && board[1][3] == board[2][3])
+	{
+		cellToMove.row = 3;
+		cellToMove.column = 3;
+	}
+	else if (board[1][2] != '.' && board[1][3] != '.' && board[1][2] == board[1][3])
+	{
+		cellToMove.row = 1;
+		cellToMove.column = 1;
+	}
+	else if (board[2][2] != '.' && board[2][3] != '.' && board[2][2] == board[2][3])
+	{
+		cellToMove.row = 2;
+		cellToMove.column = 1;
+	}
+	else if (board[3][2] != '.' && board[3][3] != '.' && board[3][2] == board[3][3])
+	{
+		cellToMove.row = 3;
+		cellToMove.column = 1;
+	}
+	else if (board[2][1] != '.' && board[3][1] != '.' && board[2][1] == board[3][1])
+	{
+		cellToMove.row = 1;
+		cellToMove.column = 1;
+	}
+	else if (board[2][2] != '.' && board[3][2] != '.' && board[2][2] == board[3][2])
+	{
+		cellToMove.row = 1;
+		cellToMove.column = 2;
+	}
+	else if (board[2][3] != '.' && board[3][3] != '.' && board[2][3] == board[3][3])
+	{
+		cellToMove.row = 1;
+		cellToMove.column = 3;
+	}
+	// checking horizontal lines
+	else if (board[1][1] != '.' && board[1][3] != '.' && board[1][1] == board[3][3])
+	{
+		cellToMove.row = 1;
+		cellToMove.column = 2;
+	}
+	else if (board[2][1] != '.' && board[2][3] != '.' && board[2][1] == board[2][3])
+	{
+		cellToMove.row = 2;
+		cellToMove.column = 2;
+	}
+	else if (board[3][1] != '.' && board[3][3] != '.' && board[3][1] == board[3][3])
 	{
 		cellToMove.row = 3;
 		cellToMove.column = 2;
 	}
 	// checking vertical lines
-	else if (board[1][1] == 'x' && board[3][1] == 'x')
+	else if (board[1][1] != '.' && board[3][1] != '.' && board[1][1] == board[3][1])
 	{
 		cellToMove.row = 2;
 		cellToMove.column = 1;
 	}
-	else if (board[1][2] == 'x' && board[3][2] == 'x')
+	else if (board[1][2] != '.' && board[3][2] != '.' && board[1][2] == board[3][2])
 	{
 		cellToMove.row = 2;
 		cellToMove.column =2;
 	}
-	else if (board[1][3] == 'x' && board[3][3] == 'x')
+	else if (board[1][3] != '.' && board[3][3] != '.' && board[1][3] == board[3][3])
 	{
 		cellToMove.row = 2;
 		cellToMove.column = 3;
-
-	}
-	// checking diagonal lines
-	else if (board[1][1] == 'x' && board[3][3] == 'x')
-	{
-		cellToMove.row = 2;
-		cellToMove.column = 2;
-	}
-	else if (board[1][3] == 'x' && board[3][1] == 'x')
-	{
-		cellToMove.row = 2;
-		cellToMove.column = 2;
 	}
 
 	struct Cell checking;
