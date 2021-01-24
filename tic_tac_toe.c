@@ -184,8 +184,7 @@ void smart_enemy_move()
 	else if (board[3][1] == 'x' && board[3][3] == 'x')
 	{
 		cellToMove.row = 3;
-		cellToMove.column = 3;
-
+		cellToMove.column = 2;
 	}
 	// checking vertical lines
 	else if (board[1][1] == 'x' && board[3][1] == 'x')
