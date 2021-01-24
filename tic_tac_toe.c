@@ -4,13 +4,15 @@
 void move();
 void print_board();
 int check_if_end();
-void enemy_move();
+void random_enemy_move();
 int change_board(int *row, int *column, char player);
 
 int is_board_full();
 
 void fillList();
 void shuffleList();
+
+void smart_enemy_move();
 
 char board[4][4] = 
 {
@@ -75,7 +77,7 @@ int main()
 		result = check_if_end();
 		if (result == 0) break;
 		system("clear");
-        enemy_move();
+        smart_enemy_move();
         result = check_if_end();
         turn++;
     }
@@ -144,7 +146,7 @@ void move()
 	move();
 }
 
-void enemy_move()
+void random_enemy_move()
 {
 	/* Initializes random number generator */
 	srand((unsigned) time(&t));
@@ -161,6 +163,76 @@ void enemy_move()
 	}
 	change_board(&randomCell.row, &randomCell.column, 'o');
 	list[random_index].row = 0;
+}
+
+void smart_enemy_move()
+{
+	struct Cell cellToMove;
+	cellToMove.row = 0;
+	cellToMove.column = 0;
+	// checking horizontal lines
+	if (board[1][1] == 'x' && board[1][3] == 'x')
+	{
+		cellToMove.row = 1;
+		cellToMove.column = 2;
+	}
+	else if (board[2][1] == 'x' && board[2][3] == 'x')
+	{
+		cellToMove.row = 2;
+		cellToMove.column = 2;
+	}
+	else if (board[3][1] == 'x' && board[3][3] == 'x')
+	{
+		cellToMove.row = 3;
+		cellToMove.column = 3;
+
+	}
+	// checking vertical lines
+	else if (board[1][1] == 'x' && board[3][1] == 'x')
+	{
+		cellToMove.row = 2;
+		cellToMove.column = 1;
+	}
+	else if (board[1][2] == 'x' && board[3][2] == 'x')
+	{
+		cellToMove.row = 2;
+		cellToMove.column =2;
+	}
+	else if (board[1][3] == 'x' && board[3][3] == 'x')
+	{
+		cellToMove.row = 2;
+		cellToMove.column = 3;
+
+	}
+	// checking diagonal lines
+	else if (board[1][1] == 'x' && board[3][3] == 'x')
+	{
+		cellToMove.row = 2;
+		cellToMove.column = 2;
+	}
+	else if (board[1][3] == 'x' && board[3][1] == 'x')
+	{
+		cellToMove.row = 2;
+		cellToMove.column = 2;
+	}
+
+	struct Cell checking;
+	for (int i = 0; i < 9; i++)
+	{
+		checking = list[i];
+		if (checking.row != cellToMove.row) continue;
+		else
+		{
+			if (checking.column != cellToMove.column) continue;
+			else
+			{
+				change_board(&cellToMove.row, &cellToMove.column, 'o');		
+				list[i].row = 0;
+				return;
+			}
+		}
+	}
+	random_enemy_move();
 }
 
 int is_board_full()
